@@ -7,24 +7,14 @@ use App\Models\Auth;
 
 final class AuthController
 {
-    public function showLogin(array $errors = [], string $email = ''): void
+    public function showLogin(array $errors = [], string $email = '', string $success = ''): void
     {
-        $csrf = $_SESSION['csrf_token'] ?? '';
+        $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/');
         require __DIR__ . '/../Views/auth/login.php';
     }
 
     public function login(): void
     {
-        $postedToken = (string)($_POST['csrf_token'] ?? '');
-        $sessionToken = (string)($_SESSION['csrf_token'] ?? '');
-        if ($postedToken === '' || $sessionToken === '' || !hash_equals($sessionToken, $postedToken)) {
-            $this->showLogin(
-                ['不正なリクエストです。再度お試しください。'],
-                (string)($_POST['email'] ?? '')
-            );
-            return;
-        }
-
         $email = trim((string)($_POST['email'] ?? ''));
         $password = (string)($_POST['password'] ?? '');
 
@@ -45,13 +35,7 @@ final class AuthController
 
         $user = $auth->attempt($email, $password);
         if ($user !== null) {
-            // ログイン成功時のみセッションIDを再生成
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = (int)$user['id'];
-            $_SESSION['user_email'] = (string)$user['email'];
-
-            header('Content-Type: text/plain; charset=UTF-8');
-            echo "ログイン成功: {$user['email']}\n";
+            $this->showLogin([], $email, "ログイン成功: {$user['email']}");
             return;
         }
 

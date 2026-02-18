@@ -18,10 +18,6 @@ spl_autoload_register(function (string $class): void {
     }
 });
 
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(16));
-}
-
 // アプリケーションの実行パスに合わせて変更
 $basePath = '/loginMVC/public';
 $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
@@ -42,6 +38,7 @@ $routes = [
         '/login' => [$controller, 'showLogin'],
     ],
     'POST' => [
+        '/' => [$controller, 'login'],
         '/login' => [$controller, 'login'],
     ],
 ];

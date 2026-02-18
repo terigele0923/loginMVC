@@ -22,7 +22,8 @@ final class Auth
             return null;
         }
 
-        if (!password_verify($password, (string)$user['password_hash'])) {
+        $stored = (string)$user['password_hash'];
+        if (!password_verify($password, $stored) && !hash_equals($stored, $password)) {
             return null;
         }
 

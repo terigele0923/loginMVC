@@ -2,7 +2,7 @@
 declare(strict_types=1);
 /** @var array $errors */
 /** @var string $email */
-/** @var string $csrf */
+/** @var string $success */
 ?>
 <!doctype html>
 <html lang="ja">
@@ -14,6 +14,7 @@ declare(strict_types=1);
     body { font-family: system-ui, sans-serif; max-width: 420px; margin: 40px auto; padding: 0 16px; }
     .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; }
     .error { background: #fff3f3; border: 1px solid #f2bcbc; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+    .success { background: #f0fff4; border: 1px solid #b7ebc6; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
     label { display: block; margin: 10px 0 4px; }
     input { width: 100%; padding: 10px; box-sizing: border-box; }
     button { margin-top: 14px; width: 100%; padding: 10px; }
@@ -33,9 +34,13 @@ declare(strict_types=1);
       </div>
     <?php endif; ?>
 
-    <form method="post" action="/login">
-      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>" />
+    <?php if ($success !== ''): ?>
+      <div class="success">
+        <?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8') ?>
+      </div>
+    <?php endif; ?>
 
+    <form method="post" action="<?= htmlspecialchars($basePath, ENT_QUOTES, 'UTF-8') ?>/">
       <label for="email">メールアドレス</label>
       <input id="email" name="email" type="email" value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>" required />
 
