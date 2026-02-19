@@ -1,0 +1,17 @@
+{
+    "name": "bis-d/login-mvc",
+    "autoload": {
+        "psr-4": {
+            "BisD\\LoginMvc\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "terigele",
+            "email": "21010408@anabuki-college.ac.jp"
+        }
+    ],
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^4.0"
+    }
+}
